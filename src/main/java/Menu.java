@@ -27,20 +27,23 @@ public class Menu {
             // Manejar las opciones seleccionadas
             switch (opcion) {
                 case 1:
-                    concesionario.addNew();
+                    System.out.println("Inserte la matrícula");
+                    concesionario.addNew(scanner.next());
                     Thread.sleep(2000);
                     break;
                 case 2:
-                    concesionario.deleteById();
+                    System.out.println("Inserte el Id a borrar");
+                    concesionario.deleteById(scanner.nextInt());
                     Thread.sleep(2000);
                     break;
                 case 3:
-                    concesionario.findById();
-                    Thread.sleep(2000);
+                    System.out.println("Inserte el Id a buscar");
+                    concesionario.findById(scanner.nextInt());
+                    Thread.sleep(4000);
                     break;
                 case 4:
                     concesionario.findAll();
-                    Thread.sleep(2000);
+                    Thread.sleep(4000);
                     break;
                 case 5:
                     concesionario.toCsv();
@@ -48,6 +51,7 @@ public class Menu {
                     break;
                 case 6:
                     System.out.println("Se ha seleccionado la opción: Terminar el programa");
+                    concesionario.overWriteFile();
                     Thread.sleep(2000);
                     break;
                 default:
