@@ -22,6 +22,7 @@ que servirá como interfaz.
 -Borrar coche por id
 -Consulta coche por id
 -Listado de coches
+-Convertir a CSV
 -Terminar el programa
 
 Las opciones del menú 1 a 5 trabajarán sobre la colección de tipo ArrayList 
