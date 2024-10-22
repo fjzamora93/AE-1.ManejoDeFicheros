@@ -29,9 +29,9 @@ public class Coche implements Serializable {
     public Coche(String matricula, String marca, String modelo, String color) {
         this.id = nextId++;
         this.matricula = matricula;
-        this.marca = marca + "_" + this.id;
-        this.modelo = modelo + "_" + this.id;
-        this.color = color + "_" + this.id;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.color = color;
     }
 
     public void mostrarDatos(){

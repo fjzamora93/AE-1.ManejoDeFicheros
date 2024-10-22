@@ -1,5 +1,4 @@
 import model.Coche;
-import model.Producto;
 
 import java.io.*;
 
@@ -23,19 +22,18 @@ public class GestorCoches {
     }
 
 
-    public void addNew(String matricula) {
+    public void addNew(Coche cocheNuevo) {
         System.out.println("Se ha seleccionado la opción: Añadir coche");
         ObjectOutputStream objectOutputStream = null;
-        Coche newItem = new Coche(matricula, "Marca", "Modelo", "Color");
 
         for (Coche coche: concesionarioList){
-            if (coche.getId() == newItem.getId() || coche.getMatricula().equals(newItem.getMatricula())){
+            if (coche.getMatricula().equals(cocheNuevo.getMatricula())){
                 System.out.println("El vehículo ya está registrado en el sistema");
                 return;
             }
         }
-        System.out.println("Añadiendo al concesionario: " + newItem);
-        concesionarioList.add(newItem);
+        System.out.println("Añadiendo al concesionario: " + cocheNuevo);
+        concesionarioList.add(cocheNuevo);
         // overWriteFile(); Aún no, solo al salir
     }
 
