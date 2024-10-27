@@ -12,8 +12,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Coche implements Serializable {
-    private static final long serialVersionUID =  1L;
-    private static int nextId = 1;
+
 
     private int id;
     private String matricula;
@@ -22,12 +21,8 @@ public class Coche implements Serializable {
     private String color;
 
 
-    public Coche(int id){
-        this.id = id;
-    }
 
     public Coche(String matricula, String marca, String modelo, String color) {
-        this.id = nextId++;
         this.matricula = matricula;
         this.marca = marca;
         this.modelo = modelo;
@@ -35,29 +30,12 @@ public class Coche implements Serializable {
     }
 
     public void mostrarDatos(){
-        System.out.println("serialVersionUID = " + serialVersionUID);
-        System.out.println("id = " + id);
-        System.out.println("title = " + matricula);
-        System.out.println("price = " + marca);
-        System.out.println("stock = " + modelo);
-        System.out.println("stock = " + color);
+        System.out.println("matricula = " + matricula);
+        System.out.println("marca = " + marca);
+        System.out.println("modelo = " + modelo);
+        System.out.println("color = " + color);
     }
 
-
-    public static void setNextId(int maxId){
-        nextId = maxId +1;
-    }
-
-    @Override
-    public String toString() {
-        return "Coche{" +
-                "id=" + id +
-                ", matricula='" + matricula + '\'' +
-                ", marca='" + marca + '\'' +
-                ", modelo='" + modelo + '\'' +
-                ", color='" + color + '\'' +
-                '}';
-    }
 
     @Override
     public boolean equals(Object o) {

@@ -17,6 +17,7 @@ public interface SchemaDB {
 
     //Los pasajeros tendrán los siguientes atributos, id, nombre, edad y peso.
     String TAB_PAS = "pasajeros";
+    String COL_PAS_ID = "id";
     String COL_PAS_NOMBRE = "nombre";
     String COL_PAS_EDAD = "edad";
     String COL_PAS_PESO = "peso";
