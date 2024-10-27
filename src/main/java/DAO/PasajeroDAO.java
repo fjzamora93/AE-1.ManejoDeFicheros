@@ -50,9 +50,8 @@ public class PasajeroDAO {
     }
 
     //Listar todos los pasajeros
-    public ArrayList<Pasajero> findAll(){
-        ArrayList<Pasajero> listaResultado = new ArrayList<>();
-        return listaResultado;
+    public ArrayList<Pasajero> findAll() throws SQLException {
+        return getResultados(resultSet);
     }
 
     //Añadir pasajero a coche, pide un id de un pasajero y el id de un coche, y lo añadirá al coche a base de datos.

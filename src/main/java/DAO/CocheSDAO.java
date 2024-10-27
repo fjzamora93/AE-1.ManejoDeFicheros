@@ -35,12 +35,13 @@ public class CochesDAO {
     }
 
     //BORRAR COCHE POR ID
-    public void deleteById(){
+    public void deleteById(int id){
 
     }
 
     //CONSULTAR COCHE POR ID
-    public void findById(){
+    public Coche findById(int id){
+        return new Coche("1","B","C","D");
 
     }
 
@@ -50,8 +51,8 @@ public class CochesDAO {
     }
 
     // LISTAR TODOS LOS COCHES
-    public void findAll(){
-
+    public ArrayList<Coche> findAll() throws SQLException {
+        return getResultados(resultSet);
     }
 
 
