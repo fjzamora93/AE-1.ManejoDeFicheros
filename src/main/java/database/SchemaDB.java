@@ -10,6 +10,7 @@ public interface SchemaDB {
     String COL_ID = "id";
 
     String TAB_COCHE = "coches";
+
     String COL_COCHE_MATRICULA= "matricula";
     String COL_COCHE_MARCA= "marca";
     String COL_COCHE_MODELO = "modelo";
@@ -17,9 +18,15 @@ public interface SchemaDB {
 
     //Los pasajeros tendrán los siguientes atributos, id, nombre, edad y peso.
     String TAB_PAS = "pasajeros";
-    String COL_PAS_ID = "id";
+
     String COL_PAS_NOMBRE = "nombre";
     String COL_PAS_EDAD = "edad";
     String COL_PAS_PESO = "peso";
+
+
+    String TAB_COCHE_PAS = "coche_pas";
+    String COL_PAS_ID = "id";
+    String COL_COCHE_ID = "id";
+
 
 }

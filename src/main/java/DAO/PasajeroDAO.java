@@ -37,41 +37,100 @@ public class PasajeroDAO {
     //Borrar pasajero por id
     public void deleteById(int id) throws SQLException {
         String query = String.format("DELETE FROM %s WHERE %s = ?",
-                SchemaDB.TAB_PAS, SchemaDB.COL_PAS_ID);
+                SchemaDB.TAB_PAS, SchemaDB.COL_ID);
         preparedStatement = connection.prepareStatement(query);
         preparedStatement.setInt(1, id);
         preparedStatement.execute();
     }
 
     //Consulta pasajero por id
-    public Pasajero findById(int id){
-        return new Pasajero("X", 0, 0);
+    public Pasajero findById(int id) throws SQLException {
+        String query = String.format("SELECT * FROM %s WHERE %s = id",
+                SchemaDB.TAB_PAS, SchemaDB.COL_ID);
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        resultSet = preparedStatement.executeQuery();
+        if (!getResultados(resultSet).isEmpty()){
+            return getResultados(resultSet).get(0);
+        } else {
+            return null;
+        }
 
     }
 
     //Listar todos los pasajeros
     public ArrayList<Pasajero> findAll() throws SQLException {
+        String query = String.format("SELECT * FROM %s",
+                SchemaDB.TAB_PAS);
+        preparedStatement = connection.prepareStatement(query);
+        resultSet = preparedStatement.executeQuery();
         return getResultados(resultSet);
     }
 
-    //Añadir pasajero a coche, pide un id de un pasajero y el id de un coche, y lo añadirá al coche a base de datos.
-    //Sería una buena opción mostrar todos los coches disponibles.
-    public void addPasToCar(int idPas, int idCar){
-
+    //Añadir pasajero a coche, id de un pasajero y el id de un coche, y lo añadirá al coche DB.
+    //Sería una buena opción mostrar todos los coches disponibles. ???? Y cómo se supone que entendemos que un coche está disponible?
+    public void addPasToCar(int idPas, int idCoche) throws SQLException {
+        String query = String.format("INSERT INTO %s WHERE %s = ? AND %s = ?",
+                SchemaDB.TAB_COCHE_PAS,
+                SchemaDB.COL_PAS_ID,
+                SchemaDB.COL_COCHE_ID );
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, idPas);
+        preparedStatement.setInt(2, idCoche);
+        resultSet = preparedStatement.executeQuery();
     }
 
 
     //Eliminar pasajero de coche, pedirá un id pasajero y el id coche, y lo eliminará del coche en base de datos.
     // Sería una buena opción mostrar todos los coches y sus pasajeros asociados.
-    public void deletePassOnCar(int idPas, int idCar){
-
+    public void deletePassOnCar(int idPas, int idCoche) throws SQLException {
+        String query = String.format("DELETE FROM %s WHERE %s = ? AND %s = ?",
+                SchemaDB.TAB_COCHE_PAS,
+                SchemaDB.COL_PAS_ID,
+                SchemaDB.COL_COCHE_ID );
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, idPas);
+        preparedStatement.setInt(2, idCoche);
+        resultSet = preparedStatement.executeQuery();
+        pasajerosPorCoche();
     }
 
+    //MOSTRAR TODOS LOS COCHES Y SUS PASAJEROS ASOCIADOS
+    public void pasajerosPorCoche() throws SQLException {
+        String query = String.format(
+                "SELECT p.*, c.* " +
+                        "FROM %s p " +
+                        "INNER JOIN %s cp ON p.%s = cp.%s " +
+                        "INNER JOIN %s c ON cp.%s = c.%s",
+                SchemaDB.TAB_PAS,
+                SchemaDB.TAB_COCHE_PAS, SchemaDB.COL_ID, SchemaDB.COL_PAS_ID,
+                SchemaDB.TAB_COCHE, SchemaDB.COL_COCHE_ID, SchemaDB.COL_ID
+        );
+        preparedStatement = connection.prepareStatement(query);
+        resultSet = preparedStatement.executeQuery();
 
-    //Listar todos los pasajeros de un coche, el programa pedirá el id de un coche, y mostrará todos los pasajeros de él.
-    public ArrayList<Pasajero> findPasOnCar(int idCar){
-        ArrayList<Pasajero> listaResultado = new ArrayList<>();
-        return listaResultado;
+        while (resultSet.next()){
+            String nombre = resultSet.getString(SchemaDB.COL_PAS_NOMBRE);
+            String matricula = resultSet.getString(SchemaDB.COL_COCHE_MATRICULA);
+            String pasajeroEnCoche = nombre + " - " + matricula;
+            System.out.println(pasajeroEnCoche);
+        }
+}
+ //Listar todos los pasajeros de un coche, el programa pedirá el id de un coche, y mostrará todos los pasajeros de él.
+    public ArrayList<Pasajero> findPasOnCar(int idCoche) throws SQLException {
+        String query = String.format(
+                "SELECT * FROM %s WHERE %s IN (SELECT %s FROM %s WHERE %s = ?)",
+                SchemaDB.TAB_PAS,
+                SchemaDB.COL_ID,
+                SchemaDB.COL_PAS_ID,
+                SchemaDB.TAB_COCHE_PAS,
+                SchemaDB.COL_COCHE_ID
+        );
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, idCoche);
+        resultSet = preparedStatement.executeQuery();
+        return getResultados(resultSet);
+
     }
 
     private ArrayList<Pasajero> getResultados(ResultSet datosResultantes) throws SQLException {

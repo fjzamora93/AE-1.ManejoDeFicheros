@@ -23,7 +23,7 @@ public class CochesDAO {
 
     // que se pueda añadir un coche a la base de datos
     public void addCoche(Coche coche) throws SQLException {
-        String query = String.format("INSERT into %s (%s,%s,%s,%s) VALUES (?,?,?,?)",
+        String query = String.format("INSERT INTO %s (%s,%s,%s,%s) VALUES (?,?,?,?)",
                 SchemaDB.TAB_COCHE, SchemaDB.COL_COCHE_MATRICULA, SchemaDB.COL_COCHE_MARCA,
                 SchemaDB.COL_COCHE_MODELO, SchemaDB.COL_COCHE_COLOR);
         preparedStatement = connection.prepareStatement(query);
@@ -35,37 +35,53 @@ public class CochesDAO {
     }
 
     //BORRAR COCHE POR ID
-    public void deleteById(int id){
+    public void deleteById(int id) throws SQLException {
+        String query = String.format("DELETE FROM %s WHERE %s = ?",
+                SchemaDB.TAB_COCHE, SchemaDB.COL_ID);
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        preparedStatement.execute();
 
     }
 
     //CONSULTAR COCHE POR ID
-    public Coche findById(int id){
-        return new Coche("1","B","C","D");
-
+    public Coche findById(int id) throws SQLException {
+        String query = String.format("SELECT * FROM %s WHERE %s = id",
+                SchemaDB.TAB_COCHE, SchemaDB.COL_ID);
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setInt(1, id);
+        resultSet = preparedStatement.executeQuery();
+        if (!getResultados(resultSet).isEmpty()){
+            return getResultados(resultSet).get(0);
+        } else {
+            return null;
+        }
     }
 
     //MODIFICAR COCHE POR ID
-    public void replaceOne(){
+    public void replaceOne(Coche coche, int IdCoche) throws SQLException {
+        String query = String.format("UPDATE %s SET %s = ?, %s = ?, %s = ?, %s = ? WHERE %s = ?",
+                SchemaDB.TAB_COCHE, SchemaDB.COL_COCHE_MATRICULA, SchemaDB.COL_COCHE_MARCA,
+                SchemaDB.COL_COCHE_MODELO, SchemaDB.COL_COCHE_COLOR, SchemaDB.COL_ID);
+        preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, coche.getMatricula());
+        preparedStatement.setString(2, coche.getMarca());
+        preparedStatement.setInt(3, coche.getModelo());
+        preparedStatement.setInt(4, coche.getColor());
+        preparedStatement.setInt(5, IdCoche);
+        preparedStatement.execute();
 
     }
 
     // LISTAR TODOS LOS COCHES
     public ArrayList<Coche> findAll() throws SQLException {
-        return getResultados(resultSet);
-    }
-
-
-
-    //OBTENER UN ARRAY POR MODELOS
-    public ArrayList<Coche> getModeloCochesModelo(String marcaParam) throws SQLException {
-        ArrayList<Coche> listaResultado = new ArrayList<>();
-        String query = String.format("SELECT * FROM %s WHERE %s=?", SchemaDB.TAB_COCHE, SchemaDB.COL_COCHE_MODELO);
+        String query = String.format("SELECT * FROM %s",
+                SchemaDB.TAB_COCHE);
         preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1,marcaParam);
         resultSet = preparedStatement.executeQuery();
         return getResultados(resultSet);
     }
+
 
 
     private ArrayList<Coche> getResultados(ResultSet datosResultantes) throws SQLException {
